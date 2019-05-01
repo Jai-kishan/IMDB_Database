@@ -5,14 +5,14 @@ import sys #The sys.exit() function allows the developer to exit from Python.
 from pprint import pprint
 
 
-def readData(user):
+def readData(user): #
     conn = sqlite3.connect('cast.sqlite3')
     c = conn.cursor() # Acursor object is our interface to the database, that allows running anySQL query on our database.
     Movie_list=[]
     for i in range(user):
         Movie_Dic={}
         ids=i+1
-        for row in c.execute("SELECT * from movie_details where id ='"+str(ids)+"';"):
+        for row in c.execute("SELECT * from movie_details where id ='"+str(ids)+"';"): 
             Movie_Dic["Name"]=row[1]
             Movie_Dic["Director"]=row[2]
             Movie_Dic["Country"]=row[3]
@@ -35,19 +35,31 @@ def readData(user):
 def create_table():
     #if the database does not exist, then it will be created and finally, a database object will be returned
     conn = sqlite3.connect('cast.sqlite3')
+    
+    #Cursors are created by the connection.cursor() method: they are bound to the connection
+    #for the entire lifetime and all the commands are executed in the context of the database session wrapped by the connection.
     c = conn.cursor()
     #The c.execute executes the SQL statement. Here we create a table "movie_details and movie_cast"
     c.execute('''CREATE TABLE IF NOT EXISTS movie_details(id INTEGER PRIMARY KEY AUTOINCREMENT,
-        Movie_Title text,  Director TEXT, Country TEXT, Language TEXT, Poster_image_url TEXT, 
-        Bio TEXT,RunTime INT, Genres TEXT)''') 
-    c.execute('''CREATE TABLE IF NOT EXISTS movie_cast(id INTEGER , Actor_name TEXT, imdb_ids TEXT)''') 
+                                                        Movie_Title text,
+                                                        Director TEXT,
+                                                        Country TEXT,
+                                                        Language TEXT,
+                                                        Poster_image_url TEXT, 
+                                                        Bio TEXT,
+                                                        RunTime INT,
+                                                        Genres TEXT)''') ##Creating the 1st table for storing movies_details
+    
+    c.execute('''CREATE TABLE IF NOT EXISTS movie_cast(id INTEGER ,
+                                                    Actor_name TEXT,
+                                                    imdb_ids TEXT)''') #creating the second table for storing cast details of movie
     conn.commit() # this method after every transaction that modifies data for tables that use transactional storage engines.
     # conn.close() #If we are finished with our operations on the database file, we have to close the connection via the .close() method:
 
 
 def cast_data(details): 
     #open the databse
-    conn = sqlite3.connect('cast.sqlite3')
+    conn = sqlite3.connect('cast.sqlite3') # To connect to the Database, we can use sqlite3.connect funcction by passing the name of the file to open or create it:
     c = conn.cursor()
     create_table() #calling here create_table() for creating tables
     dataCopy = c.execute("select count(*) from movie_details") # Counting the rows in the database
@@ -83,9 +95,9 @@ def cast_data(details):
 
     else:
         # print (values)
-        user=int(input('Enter the number you want :- '))
-        if(user<=values):
-            pprint(readData(user))
+        user=int(input('Enter the number you want :- ')) #take the input from the use. how much movie details you want to see.
+        if(user<=values): 
+            pprint(readData(user)) #calling here readDate(#pass params) which is read the data form the database table.
             sys.exit() 
         else:
             print ('Number of data is not data in Database')
