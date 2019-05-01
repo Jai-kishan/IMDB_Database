@@ -4,7 +4,7 @@
 
 In this project I am using Beautiful-soup and Requests library  implemented scraper to scrape details of Top 250 Indian movies according to IMDB.com  and performed different analysis based on year, decade, genres, director, language and cast.
 
-##sqlite3
+## sqlite3
 SQLite is a relational database management system contained in a C programming library. In contrast to many other database management systems, SQLite is not a client–server database engine.
 
 ```
