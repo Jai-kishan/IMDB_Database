@@ -5,15 +5,15 @@ import sys #The sys.exit() function allows the developer to exit from Python.
 from pprint import pprint
 
 
-def readData(user): #
+def readData(user): # 
     conn = sqlite3.connect('cast.sqlite3')
     c = conn.cursor() # Acursor object is our interface to the database, that allows running anySQL query on our database.
     Movie_list=[]
     for i in range(user):
         Movie_Dic={}
         ids=i+1
-        for row in c.execute("SELECT * from movie_details where id ='"+str(ids)+"';"): 
-            Movie_Dic["Name"]=row[1]
+        for row in c.execute("SELECT * from movie_details where id ='"+str(ids)+"';"): # SELSECT all tables form the movie_details.
+            Movie_Dic["Name"]=row[1] # we are string movie_details of the 1st row for store the movie name
             Movie_Dic["Director"]=row[2]
             Movie_Dic["Country"]=row[3]
             Movie_Dic["Language"]=row[4]
@@ -23,16 +23,17 @@ def readData(user): #
             Movie_Dic['Genres']=row[8]
         
         Cast_list=[]
-        for row in c.execute("SELECT * from movie_cast where id = '"+str(ids)+"';"):
+        for row in c.execute("SELECT * from movie_cast where id = '"+str(ids)+"';"): #select the data from the movie_cast tables.
+            #firstly we are string all data in cast_dict{} after that append the date in Cast list.
             Cast_Dic={}
             Cast_Dic["Actor_name"]=row[1]
             Cast_Dic["imdb_ids"]=row[2]
-            Cast_list.append(Cast_Dic)
-        Movie_Dic["Cast"]=Cast_list
+            Cast_list.append(Cast_Dic) #append all dictionay data one by one in the cast_list list.
+        Movie_Dic["Cast"]=Cast_list #after that we strore all that in the main dic "Movie_Dic"
         Movie_list.append(Movie_Dic)
     return Movie_list
 
-def create_table():
+def create_table(): #for creating tables.
     #if the database does not exist, then it will be created and finally, a database object will be returned
     conn = sqlite3.connect('cast.sqlite3')
     
@@ -59,7 +60,7 @@ def create_table():
     # conn.close() #If we are finished with our operations on the database file, we have to close the connection via the .close() method:
 
 
-def cast_data(details): 
+def cast_data(details): #insert data in the tables.
     #open the databse
     conn = sqlite3.connect('cast.sqlite3') # To connect to the Database, we can use sqlite3.connect funcction by passing the name of the file to open or create it:
     c = conn.cursor()
@@ -72,12 +73,12 @@ def cast_data(details):
     values=value[0][0]
     if(values!=250): 
         # print (values)
-        name  = details['Movie Title'] 
-        director = ",".join(details['Director'])
-        country = details['Country']
-        language = ",".join(details['Language'])
+        name  = details['Movie Title'] # get the data form the dictionary.
+        director = ",".join(details['Director']) # .join() method we change the list value into the string.
+        country = details['Country'] #get the 
+        language = ",".join(details['Language']) # get the movie language 
         poster_image_url = details['Poster_image_url']
-        bio = details['Bio']
+        bio = details['Bio'] # store movie Bio
         runtime = details['RunTime']
         #join method through we can join the list data into one string
         genre = ",".join(details['Genres'])
@@ -85,14 +86,14 @@ def cast_data(details):
         c.execute('Insert into movie_details(Movie_Title,Director,Country,Language,Poster_image_url,Bio,RunTime,Genres) values (?,?,?,?,?,?,?,?)',data_1)
         for row in c.execute("SELECT * from movie_details where Movie_Title='" + name + "';"):
             ids= row[0]
-        main_case  = details['Cast']
+        main_case  = details['Cast'] 
 
-        for i in main_case:
+        for i in main_case:  #iterating the loop for get the cast name and cast ids 
             cname=i['Name']
-            imdb_ids=i['IMDB_ids']
+            imdb_ids=i['IMDB_ids'] 
 
             data_2=[ids,cname,imdb_ids]
-            c.execute('Insert into movie_cast(id,Actor_name,imdb_ids) values (?,?,?)',data_2)   
+            c.execute('Insert into movie_cast(id,Actor_name,imdb_ids) values (?,?,?)',data_2)   #insert the all cast data in movie_cast table.
         # .commit()  this method after every transaction that modifies data for tables that use transactional storage engines.
         conn.commit() # Save (commit) the changes
 
