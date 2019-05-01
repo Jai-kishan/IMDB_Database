@@ -38,7 +38,9 @@ def create_table():
     
     #Cursors are created by the connection.cursor() method: they are bound to the connection
     #for the entire lifetime and all the commands are executed in the context of the database session wrapped by the connection.
-    c = conn.cursor()
+    
+    c = conn.cursor() # once you have Connection, you can create a Cursor object and call its execute() method to perform SLQ commands.
+    
     #The c.execute executes the SQL statement. Here we create a table "movie_details and movie_cast"
     c.execute('''CREATE TABLE IF NOT EXISTS movie_details(id INTEGER PRIMARY KEY AUTOINCREMENT,
                                                         Movie_Title text,
@@ -63,6 +65,7 @@ def cast_data(details):
     c = conn.cursor()
     create_table() #calling here create_table() for creating tables
     dataCopy = c.execute("select count(*) from movie_details") # Counting the rows in the database
+    
     #This method accepts number of records to fetch and returns tuple where each records itself is a tuple. 
     #If there are not more records then it returns an empty tuple.[(count,)]
     value = dataCopy.fetchmany() # its appending counted tuple rows in a list.
@@ -91,7 +94,7 @@ def cast_data(details):
             data_2=[ids,cname,imdb_ids]
             c.execute('Insert into movie_cast(id,Actor_name,imdb_ids) values (?,?,?)',data_2)   
         # .commit()  this method after every transaction that modifies data for tables that use transactional storage engines.
-        conn.commit()
+        conn.commit() # Save (commit) the changes
 
     else:
         # print (values)
