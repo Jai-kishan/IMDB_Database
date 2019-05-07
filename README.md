@@ -30,6 +30,7 @@ $ easy_install lxml
 ```
 ```
 $ pip install lxml
+$ pip3 install lxml 
 ```
 Another alternative is the pure-Python html5lib parser, which parses HTML the way a web browser does. Depending on your setup, you might install html5lib with one of these commands:
 ```
