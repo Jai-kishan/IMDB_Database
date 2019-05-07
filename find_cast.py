@@ -65,7 +65,7 @@ def cast_data(details): #insert data in the tables.
     conn = sqlite3.connect('cast.sqlite3') # To connect to the Database, we can use sqlite3.connect funcction by passing the name of the file to open or create it:
     c = conn.cursor()
     create_table() #calling here create_table() for creating tables
-    dataCopy = c.execute("select count(*) from movie_details") # Counting the rows in the database
+    dataCopy = c.execute("select count(*) from movie_details") # Counting the rows from the table.
     
     #This method accepts number of records to fetch and returns tuple where each records itself is a tuple. 
     #If there are not more records then it returns an empty tuple.[(count,)]
